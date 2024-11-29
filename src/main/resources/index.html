@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Coches Cyberpunk 2077</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #0a0a0a;
+            color: #00ff00;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-image:
+                    linear-gradient(45deg, rgba(255, 0, 255, 0.1) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(255, 0, 255, 0.1) 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, rgba(255, 0, 255, 0.1) 75%),
+                    linear-gradient(-45deg, transparent 75%, rgba(255, 0, 255, 0.1) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: rgba(26, 26, 26, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px #00ff00, 0 0 50px #ff00ff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+
+        .image-container {
+            flex: 1;
+            max-width: 45%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .car-image {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 25px #00ffff;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .car-image:hover {
+            transform: scale(1.05);
+        }
+
+        .form-container {
+            flex: 1;
+            max-width: 45%;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #ff00ff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        }
+
+        h1 {
+            font-size: 2.5em;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #00ff00;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 15px #00ffff;
+            background-color: rgba(0, 255, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ff00ff;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        button:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 25px #00ffff;
+            transform: translateY(-3px);
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-right: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00ffff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider:after {
+            content: 'NO';
+            color: #fff;
+            display: block;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            top: 50%;
+            left: 70%;
+            font-size: 10px;
+            font-family: Verdana, sans-serif;
+        }
+
+        input:checked + .slider:after {
+            content: 'SÍ';
+            left: 30%;
+        }
+
+        .toggle-label {
+            color: #00ffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rental-status {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pilot-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin-top: 30px;
+        }
+
+        .pilot-table th, .pilot-table td {
+            padding: 15px;
+            text-align: left;
+            background-color: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+        }
+
+        .pilot-table th {
+            background-color: rgba(255, 0, 255, 0.2);
+            color: #ff00ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pilot-table tr:not(:first-child) {
+            transition: all 0.3s ease;
+        }
+
+        .pilot-table tr:not(:first-child):hover {
+            background-color: rgba(0, 255, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-activo {
+            background-color: #ffff00;
+            color: #000;
+        }
+
+        .status-finalizado {
+            background-color: #00ff00;
+            color: #000;
+        }
+
+        .action-button {
+            background-color: #ff00ff;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .action-button:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .action-button.disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+
+        .action-button.disabled:hover {
+            background-color: #666;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+            .content-wrapper {
+                flex-direction: column;
+            }
+            .image-container, .form-container {
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .image-container {
+                height: 300px;
+            }
+            .pilot-table {
+                font-size: 14px;
+            }
+            .pilot-table th, .pilot-table td {
+                padding: 10px;
+            }
+            .action-button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+
+        .glitch-effect {
+            position: relative;
+        }
+
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-effect::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch-effect::after {
+            left: -2px;
+            text-shadow: -2px 0 #00ffff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            20% { clip: rect(62px, 9999px, 42px, 0); }
+            40% { clip: rect(16px, 9999px, 78px, 0); }
+            60% { clip: rect(89px, 9999px, 13px, 0); }
+            80% { clip: rect(24px, 9999px, 57px, 0); }
+            100% { clip: rect(73px, 9999px, 35px, 0); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content-wrapper">
+        <div class="image-container">
+            <img id="carImage" src="https://yvqwwxwjnbqvjdvnwgvr.supabase.co/storage/v1/object/public/images/cyberpunk-car.jpg" alt="Coche Cyberpunk" class="car-image">
+        </div>
+        <div class="form-container">
+            <h1 class="glitch-effect" data-text="Reserva tu Coche">Reserva tu Coche</h1>
+            <form id="reservationForm">
+                <div class="form-group">
+                    <label for="fechaHora">Fecha y Hora de Reserva:</label>
+                    <input type="datetime-local" id="fechaHora" name="fechaHora" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipoVehiculo">Tipo de Vehículo:</label>
+                    <select id="tipoVehiculo" name="tipoVehiculo" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="sedan">Sedán Neón</option>
+                        <option value="suv">SUV Blindado</option>
+                        <option value="deportivo">Deportivo Turbo</option>
+                        <option value="volador">Aerodeslizador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="placa">Número de Placa:</label>
+                    <input type="text" id="placa" name="placa" required pattern="[A-Za-z0-9]{6}" title="Ingrese una placa válida (6 caracteres alfanuméricos)">
+                </div>
+                <div class="form-group">
+                    <label for="dni">DNI del Piloto:</label>
+                    <input type="text" id="dni" name="dni" required pattern="\d{8}[A-Za-z]" title="Ingrese un DNI válido (8 números seguidos de una letra)">
+                </div>
+                <div class="form-group">
+                    <label for="nombreChofer">Nombre del Piloto:</label>
+                    <input type="text" id="nombreChofer" name="nombreChofer" required>
+                </div>
+
+                <div class="toggle-container">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="lavado" name="lavado">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">¿Desea lavado?</span>
+                </div>
+
+                <button type="submit">Reservar Ahora</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="rental-status">
+        <h2 class="glitch-effect" data-text="Alquileres Activos">Alquileres Activos</h2>
+        <table class="pilot-table">
+            <thead>
+            <tr>
+                <th>Piloto</th>
+                <th>Vehículo</th>
+                <th>Placa</th>
+                <th>Fecha y Hora de Entrada</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="activeRentalsTableBody">
+            <!-- Los datos de la tabla se llenarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+
+        <h2 class="glitch-effect" data-text="Alquileres Finalizados">Alquileres Finalizados</h2>
+        <table class="pilot-table">
+            <thead>
+            <tr>
+                <th>Piloto</th>
+                <th>Vehículo</th>
+                <th>Placa</th>
+                <th>Fecha y Hora de Entrada</th>
+                <th>Fecha y Hora de Salida</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="finishedRentalsTableBody">
+            <!-- Los datos de la tabla se llenarán dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const vehicleImages = {
+        sedan: "https://yvqwwxwjnbqvjdvnwgvr.supabase.co/storage/v1/object/public/images/cyberpunk-sedan.jpg",
+        suv: "https://yvqwwxwjnbqvjdvnwgvr.supabase.co/storage/v1/object/public/images/cyberpunk-suv.jpg",
+        deportivo: "https://yvqwwxwjnbqvjdvnwgvr.supabase.co/storage/v1/object/public/images/cyberpunk-sports.jpg",
+        volador: "https://yvqwwxwjnbqvjdvnwgvr.supabase.co/storage/v1/object/public/images/cyberpunk-flying.jpg"
+    };
+
+    document.getElementById('tipoVehiculo').addEventListener('change', function(e) {
+        const selectedVehicle = e.target.value;
+        const carImage = document.getElementById('carImage');
+
+        if (vehicleImages[selectedVehicle]) {
+            carImage.style.opacity = '0';
+            setTimeout(() => {
+                carImage.src = vehicleImages[selectedVehicle];
+                carImage.style.opacity = '1';
+            }, 300);
+        }
+    });
+
+    document.getElementById('reservationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const fechaHora = document.getElementById('fechaHora').value;
+        const tipoVehiculo = document.getElementById('tipoVehiculo').value;
+        const placa = document.getElementById('placa').value;
+        const dni = document.getElementById('dni').value;
+        const nombreChofer = document.getElementById('nombreChofer').value;
+        const lavado = document.getElementById('lavado').checked ? 'Sí' : 'No';
+
+        alert(`Reserva realizada con éxito:\nFecha y Hora: ${fechaHora}\nTipo de Vehículo: ${tipoVehiculo}\nPlaca: ${placa}\nDNI del Piloto: ${dni}\nNombre del Piloto: ${nombreChofer}\nLavado: ${lavado}`);
+
+        // Agregar la nueva reservaEntrada a la tabla de alquileres activos
+        addReservationToTable(nombreChofer, tipoVehiculo, placa, fechaHora);
+    });
+
+    // Datos de ejemplo para las tablas
+    let activeRentals = [
+        { piloto: "John Doe", vehiculo: "Sedán Neón", placa: "ABC123", fechaHoraEntrada: "2024-09-15T14:30" },
+        { piloto: "Mike Johnson", vehiculo: "Deportivo Turbo", placa: "DEF456", fechaHoraEntrada: "2024-09-16T09:15" }
+    ];
+
+    let finishedRentals = [
+        { piloto: "Jane Smith", vehiculo: "SUV Blindado", placa: "XYZ789", fechaHoraEntrada: "2024-09-14T10:00", fechaHoraSalida: "2024-09-14T18:30" },
+        { piloto: "Emily Brown", vehiculo: "Aerodeslizador", placa: "GHI789", fechaHoraEntrada: "2024-09-13T16:45", fechaHoraSalida: "2024-09-14T09:15" }
+    ];
+
+    // Función para llenar las tablas con datos
+    function fillRentalTables() {
+        const activeTableBody = document.getElementById('activeRentalsTableBody');
+        const finishedTableBody = document.getElementById('finishedRentalsTableBody');
+
+        activeTableBody.innerHTML = '';
+        finishedTableBody.innerHTML = '';
+
+        activeRentals.forEach(rental => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${rental.piloto}</td>
+                <td>${rental.vehiculo}</td>
+                <td>${rental.placa}</td>
+                <td>${rental.fechaHoraEntrada}</td>
+                <td>
+                    <button class="action-button" onclick="finishRental(this)">Finalizar</button>
+                </td>
+            `;
+            activeTableBody.appendChild(row);
+        });
+
+        finishedRentals.forEach(rental => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${rental.piloto}</td>
+                <td>${rental.vehiculo}</td>
+                <td>${rental.placa}</td>
+                <td>${rental.fechaHoraEntrada}</td>
+                <td>${rental.fechaHoraSalida}</td>
+                <td>
+                    <button class="action-button" onclick="viewDetails(this)">Ver Detalles</button>
+                </td>
+            `;
+            finishedTableBody.appendChild(row);
+        });
+    }
+
+    // Función para agregar una nueva reservaEntrada a la tabla de alquileres activos
+    function addReservationToTable(piloto, vehiculo, placa, fechaHora) {
+        const newReservation = {
+            piloto: piloto,
+            vehiculo: vehiculo,
+            placa: placa,
+            fechaHoraEntrada: fechaHora
+        };
+        activeRentals.unshift(newReservation);
+        fillRentalTables();
+    }
+
+    // Función para finalizar un alquiler
+    function finishRental(button) {
+        const row = button.closest('tr');
+        const piloto = row.cells[0].textContent;
+        const vehiculo = row.cells[1].textContent;
+        const placa = row.cells[2].textContent;
+        const fechaHoraEntrada = row.cells[3].textContent;
+
+        // Obtener la fecha y hora actual para la salida
+        const fechaHoraSalida = new Date().toISOString().slice(0, 16);
+
+        // Mover el alquiler de activo a finalizado
+        const finishedRental = activeRentals.find(rental => rental.placa === placa);
+        if (finishedRental) {
+            activeRentals = activeRentals.filter(rental => rental.placa !== placa);
+            finishedRentals.unshift({...finishedRental, fechaHoraSalida: fechaHoraSalida});
+            fillRentalTables();
+        }
+
+        alert(`Alquiler finalizado:\nPiloto: ${piloto}\nVehículo: ${vehiculo}\nPlaca: ${placa}\nFecha y Hora de Entrada: ${fechaHoraEntrada}\nFecha y Hora de Salida: ${fechaHoraSalida}`);
+    }
+
+    // Función para ver detalles de un alquiler finalizado
+    function viewDetails(button) {
+        const row = button.closest('tr');
+        const piloto = row.cells[0].textContent;
+        const vehiculo = row.cells[1].textContent;
+        const placa = row.cells[2].textContent;
+        const fechaHoraEntrada = row.cells[3].textContent;
+        const fechaHoraSalida = row.cells[4].textContent;
+
+        alert(`Detalles del alquiler finalizado:\nPiloto: ${piloto}\nVehículo: ${vehiculo}\nPlaca: ${placa}\nFecha y Hora de Entrada: ${fechaHoraEntrada}\nFecha y Hora de Salida: ${fechaHoraSalida}`);
+    }
+
+    // Llenar las tablas al cargar la página
+    window.onload = fillRentalTables;
+</script>
+</body>
+</html>
